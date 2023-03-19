@@ -1,0 +1,38 @@
+package main;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
+
+public class ApiCDBE {
+
+    public static void main(String[] args) {
+        
+        try {
+            URL url = new URL("https://jsonplaceholder.typicode.com/posts");
+            HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
+            conexion.setRequestMethod("GET");
+            conexion.connect();
+            
+            int responseCode = conexion.getResponseCode();
+            if(responseCode != 200){
+                throw new RuntimeException("Ocurrio un error:" + responseCode);
+            }else{
+                StringBuilder informationString = new StringBuilder();
+                Scanner scanner = new Scanner(url.openStream());
+                
+                while(scanner.hasNext()){
+                    //System.out.println(informationString);
+                    informationString.append(scanner.nextLine());
+                }
+                scanner.close();
+                System.out.println(informationString);
+            }
+               
+        } catch (Exception e) {
+            System.out.println("error"+e.getMessage());
+        }
+
+    }
+    
+}
